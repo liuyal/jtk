@@ -15,7 +15,7 @@ services:
 
   jft-backend-app:
     build:
-      context: ./alpine/docker
+      context: ./.build/alpine
       dockerfile: dockerfile_alpine
     image: jft-backend-app:latest
     container_name: jft-backend-app

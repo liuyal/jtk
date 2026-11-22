@@ -72,6 +72,12 @@ fi
 
 if [[ -n "$BUILD_FLAG" ]]; then
   echo "Building docker images..."
+  # Stage the alpine build context so the real env/requirements.txt replaces
+  # the template without modifying the alpine submodule
+  rm -rf .build/alpine
+  mkdir -p .build
+  cp -r alpine/docker .build/alpine
+  cp ../env/requirements.txt .build/alpine/requirements.txt
   docker compose -f docker-compose.yml build
 fi
 
