@@ -226,6 +226,6 @@ if __name__ == "__main__":
     statement_types = ["Savings", "Chequing", "MasterCard"]
     for statement_type in statement_types:
         pdf_folder = rf"{args.folder}\{statement_type}"
-        output_folder = pathlib.Path(f"OUTPUT/{statement_type}")
+        output_folder = pathlib.Path(f"statements/{statement_type}")
         output_folder.mkdir(exist_ok=True, parents=True)
         save_transactions(pdf_folder, output_folder)
