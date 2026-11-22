@@ -12,33 +12,34 @@ services:
 #    ports:
 #      - "80:80"
 #      - "443:443"
-#
-#  jft-backend-app:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile_backend
-#    image: jft-backend-app:latest
-#    container_name: jft-backend-app
-#    restart: unless-stopped
-#    env_file:
-#      - ../env/.env
-#    depends_on:
-#      - jft-mongodb-app
-#    ports:
-#      - "5000:5000"
-#    volumes:
-#      - ../:/home/orbit
 
-  mongodb-app:
+  jft-backend-app:
+    build:
+      context: ./alpine/docker
+      dockerfile: dockerfile_alpine
+    image: jft-backend-app:latest
+    container_name: jft-backend-app
+    restart: unless-stopped
+    environment:
+      - PYTHONPATH=/home:/home/app:/home/app/backend
+    depends_on:
+      - jft-mongodb-app
+    ports:
+      - "5000:5000"
+    volumes:
+      - ../:/home/app
+      - ./main.py:/home/main.py:ro
+
+  jft-mongodb-app:
     build:
       context: .
       dockerfile: mongodb/docker/dockerfile_mongodb
-    image: mongodb-app:latest
-    container_name: mongodb-app
+    image: jft-mongodb-app:latest
+    container_name: jft-mongodb-app
     restart: unless-stopped
     mem_limit: 1g
     command: ["mongod", "--wiredTigerCacheSizeGB", "0.5"]
     ports:
       - "27017:27017"
-#    volumes:
-#      - /datadrive/mongodb:/data/db
+    volumes:
+      - /datadrive/mongodb:/data/db

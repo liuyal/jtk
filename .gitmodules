@@ -4,3 +4,6 @@
 [submodule "docker/mongodb"]
 	path = docker/mongodb
 	url = https://github.com/liuyal/mongodb-sandbox.git
+[submodule "docker/alpine"]
+	path = docker/alpine
+	url = https://github.com/liuyal/alpine-sandbox.git
