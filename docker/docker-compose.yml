@@ -32,7 +32,7 @@ services:
   mongodb-app:
     build:
       context: .
-      dockerfile: dockerfile_mongodb
+      dockerfile: mongodb/docker/dockerfile_mongodb
     image: mongodb-app:latest
     container_name: mongodb-app
     restart: unless-stopped
