@@ -1,3 +1,6 @@
 [submodule "env"]
 	path = env
 	url = https://github.com/liuyal/jerry-poetry-env.git
+[submodule "docker/mongodb"]
+	path = docker/mongodb
+	url = https://github.com/liuyal/mongodb-sandbox.git
