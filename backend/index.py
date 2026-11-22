@@ -26,9 +26,7 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app):
-    """ Lifespan context manager to handle startup
-        and shutdown events.
-    """
+    """ Lifespan context manager to handle startup and shutdown events. """
 
     global runner_task
 
@@ -86,14 +84,7 @@ async def profile_request(request: Request, call_next):
 
 @app.middleware("http")
 async def correlation_id_middleware(request: Request, call_next):
-    """Correlation ID middleware.
-
-    Reads X-Request-ID from the incoming request (so clients can supply their
-    own traceable ID) or generates a fresh UUID4 if none is present.
-    The ID is stored in a ContextVar so every log line emitted during this
-    request automatically includes it via CorrelationFilter.
-    The same ID is echoed back in the X-Request-ID response header.
-    """
+    """Correlation ID middleware. """
 
     request_id = set_request_id(request.headers.get("X-Request-ID"))
     response = await call_next(request)
