@@ -218,9 +218,7 @@ def save_transactions(pdf_folders,
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--folder",
-                        required=True,
-                        help="Base folder containing the statement type subfolders")
+    parser.add_argument("--folder", required=True)
     args = parser.parse_args()
 
     statement_types = ["Savings", "Chequing", "MasterCard"]

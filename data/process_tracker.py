@@ -6,18 +6,6 @@ import re
 import pandas as pd
 
 DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}$")
-sheet_id = "1qcspy9EQAGwQDfUGo77IfbkKo8W2R-WHSDuZZhTwaW0"
-sheet_name = "2026"
-
-# headers=0 stops Google from dropping cells that don't match the inferred column type
-url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}&headers=0"
-df = pd.read_csv(url, header=None, dtype=str, keep_default_na=False)
-
-# Optional: Save to a local CSV file
-output_path = pathlib.Path(__file__).parent / "output"
-output_path.mkdir(parents=True, exist_ok=True)
-csv_path = output_path / "downloaded_data.csv"
-df.to_csv(csv_path, index=False, header=False)
 
 
 def load_entries(path):
@@ -74,13 +62,30 @@ def load_entries(path):
     return entries
 
 
-rows = load_entries(csv_path)
+if __name__ == "__main__":
+    # headers=0 stops Google from dropping cells that don't match the inferred column type
+    sheet_id = "1qcspy9EQAGwQDfUGo77IfbkKo8W2R-WHSDuZZhTwaW0"
+    sheet_name = "2026"
+    url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}&headers=0"
 
-[print(i) for i in rows]
-print(len(rows))
+    # Load the Google Sheet as a CSV and process it
+    df = pd.read_csv(url, header=None, dtype=str, keep_default_na=False)
 
-run_total = sum([i.get("distance", 0) for i in rows if i.get("type", "") != "BIKE"])
-print(run_total)
+    # Save to a local CSV file
+    output_path = pathlib.Path(__file__).parent / "output"
+    output_path.mkdir(parents=True, exist_ok=True)
+    csv_path = output_path / f"{sheet_name}_tracker.csv"
+    df.to_csv(csv_path, index=False, header=False)
 
-bike_total = sum([i.get("distance", 0) for i in rows if i.get("type", "") == "BIKE"])
-print(bike_total)
+    rows = load_entries(csv_path)
+
+    [print(i) for i in rows]
+    print("DAYS", len(rows))
+
+    run_total = sum([i.get("distance", 0) for i in rows if i.get("type", "") != "BIKE"])
+    print("RUN:", run_total)
+
+    bike_total = sum([i.get("distance", 0) for i in rows if i.get("type", "") == "BIKE"])
+    print("BIKE:", bike_total)
+
+    print("TOTAL:", run_total + bike_total)
